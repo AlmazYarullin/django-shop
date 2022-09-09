@@ -11,7 +11,7 @@
 
 ### Running
 
-1. You can run by simply using command
+1. You can run by using command
     ```
     docker-compose up
     ```
