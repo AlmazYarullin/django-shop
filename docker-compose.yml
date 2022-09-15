@@ -16,13 +16,13 @@ services:
 
   app:
     container_name: app
-    build: .
+    image: pumpka/test-project
     entrypoint: ./docker-entrypoint.sh
-    volumes:
-      - .:/code
     ports:
       - "8000:8000"
     restart: always
+    depends_on:
+      - db
     environment:
       SECRET_KEY: django-insecure-0n-njadk2$v*ifoj9lwra+m#4z(2rb6^wte2sbu4hwuk*ceej*
       STRIPE_API_KEY: sk_test_4eC39HqLyjWDarjtT1zdp7dc
@@ -34,11 +34,8 @@ services:
       DJANGO_SUPERUSER_USERNAME: admin
       DJANGO_SUPERUSER_PASSWORD: 123123
       DJANGO_SUPERUSER_EMAIL: example@example.com
-      DEV: "true"
-      SERVER_NAMES: "localhost 127.0.0.1"
-      
-    depends_on:
-      - db
+      DEV: "false"
+      SERVER_NAMES: localhost,127.0.0.1
 
 volumes:
   postgres_db:
