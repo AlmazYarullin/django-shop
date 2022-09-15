@@ -8,14 +8,37 @@
     <p>{{ item.description }}</p>
     <p>{{ item.price }}</p>
     <button id="buy-button">Buy</button>
+    <button id="add-to-order-button">Add to cart</button>
+    <div>
+        <p>Товаров в корзине: {{ items_in_order_amount }}</p>
+    </div>
+    <button id="buy-cart-button">Buy cart</button>
     <script type="text/javascript">
       const stripe = Stripe('{{ stripe_client_key }}');
       const buyButton = document.getElementById('buy-button');
+      const addToCardButton = document.getElementById('add-to-order-button');
+      const buyCartButton = document.getElementById('buy-cart-button');
       buyButton.addEventListener('click', function() {
-        fetch('{% url 'create_checkout_session' item.id %}', {method: 'GET'})
+        fetch('{% url 'buy_item' item.id %}', {method: 'GET'})
             .then(response => { return response.json() })
             .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
       });
+      addToCardButton.addEventListener('click', function () {
+          fetch('{% url 'add_item_to_order' item.id %}', { method: 'POST', redirect: 'follow', headers: {
+                  "X-CSRFToken": '{{ csrf_token }}'
+          } })
+              .then(response => {
+                  if (response.redirected) {
+                      document.location = response.url;
+                  }
+              })});
+      {% if items_in_order_amount %}
+      buyCartButton.addEventListener('click', function() {
+        fetch('{% url 'buy_cart' request.session.order_id %}', {method: 'GET'})
+            .then(response => { return response.json() })
+            .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+      });
+      {% endif %}
     </script>
   </body>
 </html>
