@@ -59,7 +59,6 @@ def success_payment(request):
         order = Order.objects.get(id=request.session['order_id'])
         order.paid = True
         request.session.pop('order_id')
-        request.session.pop('items_in_cart')
         return render(request, 'success.html')
     return redirect('cancel_payment')
 
