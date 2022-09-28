@@ -1,4 +1,8 @@
-# django-test-project
+# Django shop
+
+This is a simple store that uses stripe for payment
+
+The store supports personal discounts and taxes, which can be set in the admin panel
 
 ## Getting started
 
