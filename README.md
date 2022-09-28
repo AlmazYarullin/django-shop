@@ -1,4 +1,4 @@
-# Django shop
+# Django store
 
 This is a simple store that uses stripe for payment
 
